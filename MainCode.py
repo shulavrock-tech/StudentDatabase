@@ -42,7 +42,7 @@ def submit():
 try:
     cursor=db.cursor()
     root=tk.Tk()
-        
+    root.title("Student Entry Form")
     tk.Label(root, text="Enter Name:").grid(row=0, column=0)
     name=(tk.Entry(root))
     name.grid(row=0, column=1)
