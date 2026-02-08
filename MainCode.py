@@ -17,7 +17,7 @@ db = mysql.connector.connect(
     )
 def submit():
     name_val = name.get().strip()
-    usn_val = Usn.get().strip()
+    usn_val = Usn.get().strip().upper()
     Email_val=email.get().strip()
     if not name_val:
         messagebox.showerror("Validation", "Name is required")
