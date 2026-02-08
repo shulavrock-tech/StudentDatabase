@@ -17,7 +17,7 @@ db = mysql.connector.connect(
     )
 def submit():
     name_val = name.get().strip()
-    usn_val = USN.get().strip()
+    usn_val = Usn.get().strip()
     Email_val=email.get().strip()
     if not name_val:
         messagebox.showerror("Validation", "Name is required")
@@ -35,7 +35,7 @@ def submit():
 
         messagebox.showinfo("Success", "Student successfully added into the database!")
         name.delete(0, tk.END)
-        USN.delete(0, tk.END)
+        Usn.delete(0, tk.END)
         email.delete(0, tk.END)        
     except Error as e:
         messagebox.showerror("SQL ERROR", str(e))
@@ -49,13 +49,13 @@ try:
 
                 
     tk.Label(root, text="Enter USN: "). grid(row=1, column=0)
-    USN=(tk.Entry(root))
-    USN.grid(row=1, column=1)
+    Usn=(tk.Entry(root))
+    Usn.grid(row=1, column=1)
     cursor.execute("SELECT USN, name FROM student_details")
     USN_Check= cursor.fetchall()
     USN_dict={row[0]:row[1] for row in USN_Check}
-    if str(USN) in USN_dict.keys():
-        messagebox.showinfo("Duplicate USN", f"This USN belongs to {USN_dict[USN]}")
+    if str(Usn) in USN_dict.keys():
+        messagebox.showinfo("Duplicate USN", f"This USN belongs to {USN_dict[Usn]}")
             
 
 
@@ -76,11 +76,11 @@ try:
 except Error as e:
     messagebox.showerror("SQL ERROR: ", str(e))
 
-#finally:
-    #if cursor is not None:
-        #cursor.close()
-    #if db is not None:
-        #db.close()
+finally:
+    if cursor is not None:
+        cursor.close()
+    if db is not None:
+        db.close()
 
 
 # connect → cursor → execute → commit → verify
