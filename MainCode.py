@@ -150,8 +150,10 @@ elif choice==2:
             
     except Error as e:
         messagebox.showerror("SQL ERROR: ", str(e))
+
     else:
         root.mainloop()
+
 elif choice==3:
     def check():
         
@@ -233,4 +235,5 @@ elif choice==3:
         messagebox.showerror("SQL ERROR: ","Cannot Update the Database!")
     else:
         root.mainloop()
+
 # connect → cursor → execute → commit → verify
