@@ -143,6 +143,8 @@ if choice==2:
             
     except Error as e:
         messagebox.showerror("SQL ERROR: ", str(e))
+
     else:
         root.mainloop()
+        
 # connect → cursor → execute → commit → verify
