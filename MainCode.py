@@ -17,9 +17,6 @@ db = mysql.connector.connect(
     )
 
 
-
-
-        
 print('''Enter a choice:
              
              1. To add new stundent details
@@ -33,15 +30,19 @@ if choice==1:
         name_val = name.get().strip()
         usn_val = Usn.get().strip().upper()
         Email_val=email.get().strip()
+
         if not name_val:
             messagebox.showerror("Validation", "Name is required")
             return
+        
         if not usn_val:
             messagebox.showerror("Validation", "USN is required")
             return
+        
         if not Email_val:    
             messagebox.showerror("Validation", "Email is mandatory")
             return
+        
         try:
             cursor=db.cursor()
             query = "INSERT INTO student_details(name, USN, email) VALUES (%s, %s, %s)"
@@ -52,7 +53,8 @@ if choice==1:
             messagebox.showinfo("Success", "Student successfully added into the database!")
             name.delete(0, tk.END)
             Usn.delete(0, tk.END)
-            email.delete(0, tk.END)        
+            email.delete(0, tk.END)
+
         except Error as e:
             messagebox.showerror("SQL ERROR", str(e))
     try:
@@ -107,15 +109,18 @@ if choice==2:
             query1="DELETE FROM student_details WHERE USN=%s"
             cursor.execute(query1, (usn_val,))
             db.commit()
+
             deleted=cursor.rowcount # -> returns 0 if no change is done in the database
             cursor.close()
             if deleted:
                 messagebox.showinfo("SUCCESSFUL", f" Details deleted from the Database!")
+
             else:
                 messagebox.showinfo("ERROR", "USN does not exist!")
                 
             Usn.delete(0, tk.END)
             root.destroy()
+            
         except Error as e:
             messagebox.showerror("SQL ERROR: ",str(e))
     try:
