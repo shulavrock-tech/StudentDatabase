@@ -4,6 +4,7 @@ import os
 import mysql.connector
 from mysql.connector import Error
 from tkinter import messagebox
+import string
 load_dotenv()
 db=None
 
@@ -28,7 +29,7 @@ choice=int(input("-> "))
 if choice==1:
     def submit():
         name_val = name.get().strip()
-        usn_val = Usn.get().strip().upper()
+        usn_val = (Usn.get().strip())
         Email_val=email.get().strip()
 
         if not name_val:
@@ -42,6 +43,10 @@ if choice==1:
         if not Email_val:    
             messagebox.showerror("Validation", "Email is mandatory")
             return
+        if not usn_val.isdecimal() or len(usn_val)!=3:
+            messagebox.showerror("USN ERROR: ","USN is not in correct order")
+            return
+        
         
         if not usn_val.isdecimal() or len(usn_val)!=3:
             messagebox.showerror("USN ERROR: ","USN is not in correct order")
@@ -50,7 +55,7 @@ if choice==1:
         try:
             cursor=db.cursor()
             query = "INSERT INTO student_details(name, USN, email) VALUES (%s, %s, %s)"
-            cursor.execute(query, (name_val, usn_val, Email_val))
+            cursor.execute(query, (name_val, "1BY25CS"+(usn_val), Email_val))
             db.commit()
             cursor.close()
 
