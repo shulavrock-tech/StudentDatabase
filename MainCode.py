@@ -43,6 +43,10 @@ if choice==1:
             messagebox.showerror("Validation", "Email is mandatory")
             return
         
+        if not usn_val.isdecimal() or len(usn_val)!=3:
+            messagebox.showerror("USN ERROR: ","USN is not in correct order")
+            return
+        
         try:
             cursor=db.cursor()
             query = "INSERT INTO student_details(name, USN, email) VALUES (%s, %s, %s)"
@@ -103,6 +107,9 @@ elif choice==2:
         if not usn_val:
             messagebox.showerror("Validation", "USN is required")
             return
+        if not usn_val.isdecimal() or len(usn_val)!=3:
+            messagebox.showerror("USN ERROR: ","USN is not in correct order")
+            return
         
         try:
             cursor=db.cursor()
@@ -141,9 +148,37 @@ elif choice==2:
     else:
         root.mainloop()
 elif choice==3:
+    def check():
+        
+        usn_val="1BY25CS"+Usn.get().strip()
+        cursor=db.cursor()
+        cursor.execute("SELECT USN, name FROM student_details")
+        USN_Check= cursor.fetchall()
+        cursor.close()
+        USN_dict={row[0]:row[1] for row in USN_Check}
+        if  usn_val not in USN_dict.keys():
+            messagebox.showinfo("USN ERROR: ","This USN does not Exist!")
+        #details Updation
+        try:
+            root=tk.Tk()
+            root.title("Details Updation")
+            tk.Label(root, text="Enter name: ").grid(row=1, column=0)
+            global name 
+            name=tk.Entry(root)
+            name.grid(row=1, column=1)
+            tk.Label(root, text="Enter Email: ").grid(row=2, column=0)
+            global email
+            email=tk.Entry(root)
+            email.grid(row=2, column=1)
+            submit_button=tk.Button(root, text="Submit", command=Update)
+            submit_button.grid(row=3, column=0, columnspan=2)
+        except Error as e:
+            messagebox.showerror("SQL ERROR: ","101")
+        
+            
     def Update():
-        name_val = name.get().strip()
-        usn_val = Usn.get().strip().upper()
+        name_val = name.get().strip() 
+        usn_val =Usn.get().strip().upper()
         Email_val=email.get().strip()
 
         if not name_val:
@@ -157,15 +192,40 @@ elif choice==3:
         if not Email_val:    
             messagebox.showerror("Validation", "Email is mandatory")
             return
+        
+        if not usn_val.isdecimal() or len(usn_val)!=3:
+            messagebox.showerror("USN ERROR: ","USN is not in correct order")
+            return
         try:
             cursor=db.cursor()
             query="UPDATE student_details SET name=%s, email=%s WHERE USN=%s"
-            cursor.execute(query, (name_val, Email_val, usn_val))
+            cursor.execute(query, (name_val, Email_val, "1BY25CS"+usn_val))
             db.commit()
+            updated=cursor.rowcount
+            if updated:
+                messagebox.showinfo("UPDATED: ","Stundent's Details Updated!")
+            else:
+                messagebox.showerror("ERROR: ","Failed to Update Student's Details! (USN does not exist)")
             cursor.close()
+
+            name.delete(0, tk.END)
+            Usn.delete(0, tk.END)
+            email.delete(0, tk.END)
         except Error as e:
             messagebox.showerror("SQL ERROR: ", str(e))
-        else:
-            root.mainloop()
-
+        
+    try:
+        root=tk.Tk()
+        root.title("Details Updation")
+        tk.Label(root, text="Enter USN: ").grid(row=0, column=0)
+        Usn=tk.Entry(root)
+        Usn.grid(row=0, column=1)
+        submit_button= tk.Button(root, text="Check", command=check)
+        submit_button.grid(row=3, column=0, columnspan=2)
+        
+        
+    except Error as e:
+        messagebox.showerror("SQL ERROR: ","Cannot Update the Database!")
+    else:
+        root.mainloop()
 # connect → cursor → execute → commit → verify
