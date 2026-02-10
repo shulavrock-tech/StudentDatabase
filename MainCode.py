@@ -96,7 +96,7 @@ if choice==1:
         root.mainloop()
 
 
-if choice==2:
+elif choice==2:
     def delete():
         
         usn_val = Usn.get().strip().upper()
@@ -140,4 +140,32 @@ if choice==2:
         messagebox.showerror("SQL ERROR: ", str(e))
     else:
         root.mainloop()
+elif choice==3:
+    def Update():
+        name_val = name.get().strip()
+        usn_val = Usn.get().strip().upper()
+        Email_val=email.get().strip()
+
+        if not name_val:
+            messagebox.showerror("Validation", "Name is required")
+            return
+        
+        if not usn_val:
+            messagebox.showerror("Validation", "USN is required")
+            return
+        
+        if not Email_val:    
+            messagebox.showerror("Validation", "Email is mandatory")
+            return
+        try:
+            cursor=db.cursor()
+            query="UPDATE student_details SET name=%s, email=%s WHERE USN=%s"
+            cursor.execute(query, (name_val, Email_val, usn_val))
+            db.commit()
+            cursor.close()
+        except Error as e:
+            messagebox.showerror("SQL ERROR: ", str(e))
+        else:
+            root.mainloop()
+
 # connect → cursor → execute → commit → verify
