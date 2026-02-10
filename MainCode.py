@@ -159,21 +159,22 @@ elif choice==3:
         if  usn_val not in USN_dict.keys():
             messagebox.showinfo("USN ERROR: ","This USN does not Exist!")
         #details Updation
-        try:
-            root=tk.Tk()
-            root.title("Details Updation")
-            tk.Label(root, text="Enter name: ").grid(row=1, column=0)
-            global name 
-            name=tk.Entry(root)
-            name.grid(row=1, column=1)
-            tk.Label(root, text="Enter Email: ").grid(row=2, column=0)
-            global email
-            email=tk.Entry(root)
-            email.grid(row=2, column=1)
-            submit_button=tk.Button(root, text="Submit", command=Update)
-            submit_button.grid(row=3, column=0, columnspan=2)
-        except Error as e:
-            messagebox.showerror("SQL ERROR: ","101")
+        else:
+            try:
+                root=tk.Tk()
+                root.title("Details Updation")
+                tk.Label(root, text="Enter name: ").grid(row=1, column=0)
+                global name 
+                name=tk.Entry(root)
+                name.grid(row=1, column=1)
+                tk.Label(root, text="Enter Email: ").grid(row=2, column=0)
+                global email
+                email=tk.Entry(root)
+                email.grid(row=2, column=1)
+                submit_button=tk.Button(root, text="Submit", command=Update)
+                submit_button.grid(row=3, column=0, columnspan=2)
+            except Error as e:
+                messagebox.showerror("SQL ERROR: ","101")
         
             
     def Update():
