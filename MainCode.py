@@ -21,7 +21,8 @@ print('''Enter a choice:
              
              1. To add new stundent details
              2. To remove stundent details
-             3. To update stundent details''')
+             3. To update stundent details
+             4. To Search up a student's details''')
 choice=int(input("-> "))
 
 
@@ -227,6 +228,35 @@ elif choice==3:
         
     except Error as e:
         messagebox.showerror("SQL ERROR: ","Cannot Update the Database!")
+    else:
+        root.mainloop()
+elif choice==4:
+    def Search():
+        
+        usn_val="1BY25CS"+Usn.get().strip()
+        cursor=db.cursor()
+        cursor.execute("SELECT USN, name FROM student_details")
+        USN_Check= cursor.fetchall()
+        cursor.close()
+        USN_dict={row[0]:row[1] for row in USN_Check}
+        if  usn_val not in USN_dict.keys():
+            messagebox.showinfo("USN ERROR: ","This USN does not Exist!")
+        #details Updation
+        else:
+            try:
+                messagebox.showinfo("USN FOUND",f"This USN belongs to {USN_dict[usn_val]}")
+            except Error as e:
+                messagebox.showerror("SQL ERROR","1001")
+    try:
+        root=tk.Tk()
+        root.title("Checking USN")
+        tk.Label(root, text="Enter USN: ").grid(row=0, column=0)
+        Usn=tk.Entry(root)
+        Usn.grid(row=0, column=1)
+        submit_button= tk.Button(root, text="Search", command=Search)
+        submit_button.grid(row=3, column=0, columnspan=2)
+    except Error as e:
+        messagebox.showerror("SQL ERROR","SQL ERROR")
     else:
         root.mainloop()
 # connect → cursor → execute → commit → verify
